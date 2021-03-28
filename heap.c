@@ -32,21 +32,20 @@ void Insert(int heap[], int *last, int data) {
   }
 }
 
-void BubbleDown(int heap[], int size) {
-  for (int index = 0, smallest = 1; left_idx(index) < size; index = smallest) {
-    int left = left_idx(index);
-    int right = right_idx(index);
-    smallest = left;
-
-    if (right < size && heap[right] <= heap[left]) {
-      smallest = right;
+void BubbleDown(int heap[], int size, int k) {
+  while (left_idx(k) < size) {
+    int smallest = left_idx(k);
+    if (right_idx(k) < size && heap[smallest + 1] < heap[smallest]) {
+      smallest++;
     }
 
-    if (heap[smallest] > heap[index]) {
+    if (heap[smallest] > heap[k]) {
       break;
     }
 
-    swap(&heap[index], &heap[smallest]);
+    swap(&heap[k], &heap[smallest]);
+
+    k = smallest;
   }
 }
 
@@ -58,7 +57,7 @@ int ExtractMin(int heap[], int *last) {
   heap[0] = heap[*last];
   heap[*last] = 0;
 
-  BubbleDown(heap, *last);
+  BubbleDown(heap, *last, 0);
 
   return min;
 }
