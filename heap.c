@@ -19,22 +19,27 @@ void PrintHeap(int heap[], int length) {
   }
 }
 
+void BubbleUp(int heap[], int k) {
+  while (heap[(k - 1) / 2] > heap[k]) {
+    swap(&heap[(k - 1) / 2], &heap[k]);
+
+    k = (k - 1) / 2;
+  }
+}
+
 void Insert(int heap[], int *last, int data) {
   heap[*last] = data;
 
   *last += 1;
 
   // Bubble Up
-  for (int i = *last - 1; i > 0 && heap[parent_idx(i)] > heap[i];
-       i = parent_idx(i)) {
-
-    swap(&heap[parent_idx(i)], &heap[i]);
-  }
+  BubbleUp(heap, *last - 1);
 }
 
 void BubbleDown(int heap[], int size, int k) {
   while (left_idx(k) < size) {
     int smallest = left_idx(k);
+
     if (right_idx(k) < size && heap[smallest + 1] < heap[smallest]) {
       smallest++;
     }
@@ -73,7 +78,7 @@ void RandomHeap(int heap[], int size, int max) {
 int main() {
   int heap[100] = {0}, last = 0;
 
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 20; i++) {
     Insert(heap, &last, rand() % 100);
   }
 
